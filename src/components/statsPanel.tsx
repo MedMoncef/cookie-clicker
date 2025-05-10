@@ -36,7 +36,6 @@ export default function StatsPanel() {
   const timeToNextPurchase = () => {
     if (cookiesPerSecond <= 0) return 'Never';
     
-    // For simplicity, let's assume we want to know time to 100 more cookies
     const cookiesNeeded = 100;
     const seconds = cookiesNeeded / cookiesPerSecond;
     
@@ -50,31 +49,39 @@ export default function StatsPanel() {
   };
 
   return (
-    <div className="bg-gray-100 p-4 rounded-lg shadow-md">
-      <h2 className="text-lg font-bold mb-2">Statistics</h2>
+    <div className="flex flex-col md:flex-row">
+      {/* Current cookies counter */}
+      <div className="md:w-1/4 text-center p-3 flex flex-col justify-center">
+        <div className="text-amber-800 text-sm font-medium mb-1">Current Cookies</div>
+        <div className="font-bold text-2xl text-amber-600">{cookies.toLocaleString()}</div>
+      </div>
       
-      <div className="grid grid-cols-2 gap-2 text-sm">
-        <div>Time played:</div>
-        <div className="text-right font-medium">{formatTime(timeElapsed)}</div>
+      <div className="md:w-3/4 grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div className="bg-amber-50 p-3 rounded-lg border border-amber-200 flex flex-col items-center justify-center">
+          <div className="text-amber-800 text-xs uppercase tracking-wider mb-1">Time played</div>
+          <div className="font-mono text-lg font-bold">{formatTime(timeElapsed)}</div>
+        </div>
         
-        <div>Total cookies baked:</div>
-        <div className="text-right font-medium">{totalCookiesBaked.toLocaleString()}</div>
+        <div className="bg-amber-50 p-3 rounded-lg border border-amber-200 flex flex-col items-center justify-center">
+          <div className="text-amber-800 text-xs uppercase tracking-wider mb-1">Total baked</div>
+          <div className="font-mono text-lg font-bold">{totalCookiesBaked.toLocaleString()}</div>
+        </div>
         
-        <div>Cookies per click:</div>
-        <div className="text-right font-medium">{cookiesPerClick.toFixed(1)}</div>
+        <div className="bg-gradient-to-br from-amber-50 to-amber-100 p-3 rounded-lg border border-amber-200 flex flex-col items-center justify-center">
+          <div className="text-amber-800 text-xs uppercase tracking-wider mb-1">Per click</div>
+          <div className="font-mono text-lg font-bold flex items-center">
+            <span className="text-amber-600 mr-1">🖱️</span>
+            {cookiesPerClick.toFixed(1)}
+          </div>
+        </div>
         
-        <div>Cookies per second:</div>
-        <div className="text-right font-medium">{cookiesPerSecond.toFixed(1)}</div>
-        
-        <div>Cookies per minute:</div>
-        <div className="text-right font-medium">{cookiesPerMinute.toFixed(1)}</div>
-        
-        {cookiesPerSecond > 0 && (
-          <>
-            <div>Time to +100 cookies:</div>
-            <div className="text-right font-medium">{timeToNextPurchase()}</div>
-          </>
-        )}
+        <div className="bg-gradient-to-br from-amber-50 to-amber-100 p-3 rounded-lg border border-amber-200 flex flex-col items-center justify-center">
+          <div className="text-amber-800 text-xs uppercase tracking-wider mb-1">Per second</div>
+          <div className="font-mono text-lg font-bold flex items-center">
+            <span className="text-amber-600 mr-1">⏱️</span>
+            {cookiesPerSecond.toFixed(1)}
+          </div>
+        </div>
       </div>
     </div>
   );

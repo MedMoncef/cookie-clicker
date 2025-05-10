@@ -7,34 +7,42 @@ export default function UpgradeShop() {
 
   // Filter for available upgrades (not purchased)
   const availableUpgrades = upgrades.filter(upgrade => !upgrade.purchased);
-
   return (
-    <div className="bg-amber-100 p-4 rounded-lg shadow-md mb-4">
-      <h2 className="text-xl font-bold mb-3 text-amber-800">Upgrades</h2>
+    <div>
       {availableUpgrades.length === 0 ? (
-        <p className="text-gray-500 italic">No upgrades available yet</p>
+        <div className="text-center py-4">
+          <div className="text-amber-600 mb-2">🎁</div>
+          <p className="text-amber-700 italic">All upgrades purchased!</p>
+        </div>
       ) : (
-        <div className="space-y-2">
+        <div className="space-y-3 max-h-[45vh] overflow-y-auto pr-1">
           {availableUpgrades.map(upgrade => {
             const canAfford = cookies >= upgrade.cost;
             
             return (
               <button
                 key={upgrade.id}
-                className={`w-full text-left p-2 rounded flex justify-between items-center border ${
+                className={`w-full text-left p-3 rounded-lg flex items-center border transition-all ${
                   canAfford 
-                    ? 'bg-amber-200 hover:bg-amber-300 border-amber-400' 
-                    : 'bg-gray-100 text-gray-500 border-gray-300 cursor-not-allowed'
+                    ? 'bg-gradient-to-r from-amber-100 to-amber-50 hover:to-amber-200 border-amber-300 shadow-sm relative overflow-hidden' 
+                    : 'bg-gray-100 bg-opacity-60 text-gray-500 border-gray-200 cursor-not-allowed'
                 }`}
                 onClick={() => canAfford && buyUpgrade(upgrade.id)}
                 disabled={!canAfford}
               >
-                <div>
-                  <div className="font-semibold">{upgrade.name}</div>
-                  <div className="text-xs">{upgrade.description}</div>
+                {canAfford && <div className="absolute inset-0 shine-effect"></div>}
+                <div className={`mr-4 p-2 rounded-full ${
+                  canAfford ? 'bg-amber-300 text-amber-800' : 'bg-gray-200 text-gray-500'
+                }`}>
+                  <div className="text-xl">⚡</div>
                 </div>
-                <div className="text-amber-700 font-bold">
-                  {upgrade.cost.toLocaleString()} cookies
+                <div className="flex-1 z-10">
+                  <div className="font-bold text-amber-900">{upgrade.name}</div>
+                  <div className="text-xs text-amber-700">{upgrade.description}</div>
+                </div>
+                <div className={`text-right z-10 ${canAfford ? 'text-amber-700' : 'text-gray-500'}`}>
+                  <div className="font-bold">{upgrade.cost.toLocaleString()}</div>
+                  <div className="text-xs">cookies</div>
                 </div>
               </button>
             );
